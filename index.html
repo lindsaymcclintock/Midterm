@@ -61,7 +61,7 @@
       }
       #buttonDiv {
         padding: 10px;
-        background-color: #110eb3;
+        background-color: #FF3730; /* changed color of button to make it rise to the surface more */
         border-radius: 50px;
         
       }
@@ -105,9 +105,9 @@
           "esri/portal/PortalItem", //add basemap by portal id
           "esri/core/reactiveUtils", //clear filter
           "esri/PopupTemplate",
-          "esri/popup/support/FieldInfoFormat" //used to format date field in popup
-          ],
-          (esriConfig, Map, MapView, Search, FeatureLayer, Expand, Basemap, BasemapGallery, Legend, PortalItem, reactiveUtils, PopupTemplate, FieldInfoFormat) => {
+          "esri/popup/support/FieldInfoFormat", //used to format date field in popup
+          "esri/widgets/Locate" //added locate button for ease of orienting self on map
+        ], (esriConfig, Map, MapView, Search, FeatureLayer, Expand, Basemap, BasemapGallery, Legend, PortalItem, reactiveUtils, PopupTemplate, FieldInfoFormat, Locate) => {
 
         //adding API Key
         esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurM9-pAcf23W5yt8y2jTB2KTwD4hT3CaM8-Mvb-G6W0-FLZIrkglkja6hrj5QBAYdhHky_Aq35ytynY07YLnM0CMjqmr_B5DXq5DTwaVjuhVK0n337D0hF9yrP9gnlUEQTxTMrRQvTSHtWnKX1wG9TGMucx1aBjJHNBartVSu8angjX_wJOjf4bXPOOv-MDbr6phQy8Ci3wPYIw-s618K8iCT2ayjt1-V6EECCMZaaYELsA1xJb2yw9ay-K6gNzG4wQ..AT1_OsMeJcoH";
@@ -141,8 +141,18 @@
             content: searchWidget
         });
 
-        //add search widget to top left corner
+        //add search widget to top left corner, moved above basemap gallery under search to keep location searches in the same spot
         view.ui.add(searchExpand, "top-left");
+
+
+        const locateBtn = new Locate({
+            view: view
+        });
+
+        // Add the locate widget to the top left corner of the view
+        view.ui.add(locateBtn, {
+            position: "top-left"
+        });
 
         //create basemape gallery with default esri basemaps
         const basemapGallery = new BasemapGallery({
@@ -158,7 +168,9 @@
         });
       
         // Add Expand widget to the bottom-right corner
-        view.ui.add(bgexpand, "bottom-right");
+        view.ui.add(bgexpand, "top-left"); //moved basemap gallery to top left to keep UI controls all on same side
+
+
 
 
         //create renderer for WI counties layer
@@ -411,6 +423,8 @@
         position: "top-left",
         index: 1});  
         });
+
+
 
       
       </script>
